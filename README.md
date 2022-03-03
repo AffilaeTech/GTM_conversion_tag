@@ -1,1 +1,3 @@
-# GTM_conversion_tag
+# Affilae Conversion Tag
+Affilae Conversion Tag Template for GTM
+
