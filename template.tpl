@@ -9,8 +9,6 @@ Google may provide), as modified from time to time.
 ___INFO___
 
 {
-  "displayName": "Affilae - Conversion Tag",
-  "categories": ["AFFILIATE_MARKETING", "ANALYTICS", "ATTRIBUTION", "CONVERSIONS", "LEAD_GENERATION", "MARKETING"],
   "type": "TAG",
   "id": "cvt_temp_public_id",
   "version": 1,
@@ -74,26 +72,16 @@ ___TEMPLATE_PARAMETERS___
     "displayName": "Conversion Amount",
     "simpleValueType": true,
     "alwaysInSummary": true,
-    "notSetText": "This field cannot be empty",
-    "help": "Total amount Excluding Tax of an order",
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ]
+    "notSetText": "This field cannot be empty unless Lead Gen conversion",
+    "help": "Total amount Excluding Tax of an order"
   },
   {
     "type": "TEXT",
     "name": "conversionCurrency",
     "displayName": "Conversion Currency",
     "simpleValueType": true,
-    "notSetText": "This field cannot be empty",
-    "help": "Currency in which the purchase was made in 3 letter Alphabetic Code (ex. EUR, GBP...)",
-    "valueValidators": [
-      {
-        "type": "NON_EMPTY"
-      }
-    ]
+    "notSetText": "This field cannot be empty unless Lead Gen Conversion",
+    "help": "Currency in which the purchase was made in 3 letter Alphabetic Code (ex. EUR, GBP...)"
   },
   {
     "type": "TEXT",
@@ -124,6 +112,13 @@ ___TEMPLATE_PARAMETERS___
         "simpleValueType": true,
         "canBeEmptyString": true,
         "help": "OPTIONAL FIELD - Conversion payment type (debit card, credit card, paypal...)"
+      },
+      {
+        "type": "TEXT",
+        "name": "productId",
+        "displayName": "Product ID",
+        "simpleValueType": true,
+        "help": "OPTIONAL FIELD - Product ID corresponding to internal reference and Product Feed IDs"
       }
     ],
     "groupStyle": "ZIPPY_CLOSED"
@@ -134,11 +129,12 @@ ___TEMPLATE_PARAMETERS___
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 // Access to necessary APIs
+const copyFromWindow = require('copyFromWindow');
+const callInWindow = require('callInWindow');
+const injectScript = require('injectScript');
 const log = require('logToConsole');
 const queryPermission = require('queryPermission');
 const setInWindow = require('setInWindow');
-const copyFromWindow = require('copyFromWindow');
-const callInWindow = require('callInWindow');
 
 
 
@@ -150,6 +146,7 @@ const conversionCurrency = data.conversionCurrency;
 const conversionSubId = data.conversionSubId;
 const conversionPayment = data.conversionPayment;
 const voucherCode = data.conversionVoucher;
+const productId = data.productId;
 
 
 
@@ -163,21 +160,11 @@ aeEvent.Conversion.currency = conversionCurrency;
 aeEvent.Conversion.subid = conversionSubId;
 aeEvent.Conversion.payment = conversionPayment;
 aeEvent.Conversion.voucher = voucherCode;
-       
+aeEvent.Conversion.product = productId;
 
+  
 callInWindow('AeTracker.sendConversion', aeEvent);
-
-
-//GTM On Success & On Failure
-const onSuccess = () => {
-  //log('Conversion sent successfully');
-  data.gtmOnSuccess();
-};
-
-const onFailure = () => {
-  //log('Conversion not sent');
-  data.gtmOnFailure();
-};
+data.gtmOnSuccess();
 
 
 ___WEB_PERMISSIONS___
@@ -342,6 +329,32 @@ ___WEB_PERMISSIONS___
       "isEditedByUser": true
     },
     "isRequired": true
+  },
+  {
+    "instance": {
+      "key": {
+        "publicId": "inject_script",
+        "versionId": "1"
+      },
+      "param": [
+        {
+          "key": "urls",
+          "value": {
+            "type": 2,
+            "listItem": [
+              {
+                "type": 1,
+                "string": "https://static.affilae.com/ae-v3.5.js"
+              }
+            ]
+          }
+        }
+      ]
+    },
+    "clientAnnotations": {
+      "isEditedByUser": true
+    },
+    "isRequired": true
   }
 ]
 
@@ -353,6 +366,6 @@ scenarios: []
 
 ___NOTES___
 
-Created on 3/3/2022, 14:59:50
+Created on 08/11/2022 13:11:25
 
 
