@@ -129,16 +129,9 @@ ___TEMPLATE_PARAMETERS___
 ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 // Access to necessary APIs
-const copyFromWindow = require('copyFromWindow');
-const callInWindow = require('callInWindow');
-const injectScript = require('injectScript');
-const log = require('logToConsole');
-const queryPermission = require('queryPermission');
 const setInWindow = require('setInWindow');
 
-
-
-//Access data submitted in template fields
+// Access data submitted in template fields
 const aeKey = data.aeKey;
 const conversionId = data.conversionId;
 const conversionValue = data.conversionTotal;
@@ -148,11 +141,9 @@ const conversionPayment = data.conversionPayment;
 const voucherCode = data.conversionVoucher;
 const productId = data.productId;
 
-
-
-//Create aeEvent Object
+// Create aeEvent Object
 const aeEvent = {};
-aeEvent.Conversion = {}; 
+aeEvent.Conversion = {};
 aeEvent.key = aeKey;
 aeEvent.Conversion.id = conversionId;
 aeEvent.Conversion.amount = conversionValue;
@@ -162,10 +153,12 @@ aeEvent.Conversion.payment = conversionPayment;
 aeEvent.Conversion.voucher = voucherCode;
 aeEvent.Conversion.product = productId;
 
-  
-callInWindow('AeTracker.sendConversion', aeEvent);
-data.gtmOnSuccess();
-
+// Init Global AE var to window scope and override if any
+if (setInWindow('AE', [aeEvent], true)) {
+  data.gtmOnSuccess();
+} else {
+  data.gtmOnFailure();
+}
 
 ___WEB_PERMISSIONS___
 
