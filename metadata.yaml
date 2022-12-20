@@ -2,7 +2,7 @@ homepage: "https://www.affilae.com"
 documentation: "https://affilae.com/en/integrations-2/google-tag-manager/"
 versions:
   # Lasted version
-  - sha: 9b97a6ce24b3042f799332dbcdf8af21124bc9e1
+  - sha: 56a19d057d9a13a6c029004a7ffe66f607f5f021
     changeNotes: Used setInWindow function.
   # Older versions
   - sha: 471bfdd89104268365502437c7297262db611a6b
