@@ -2,9 +2,11 @@ homepage: "https://www.affilae.com"
 documentation: "https://affilae.com/en/integrations-2/google-tag-manager/"
 versions:
   # Lasted version
+  - sha: 85587a15eacebf5fd8029f23e354913199fec082
+    changeNotes: Updated permissions.
+  # Older versions
   - sha: 56a19d057d9a13a6c029004a7ffe66f607f5f021
     changeNotes: Used setInWindow function.
-  # Older versions
   - sha: 471bfdd89104268365502437c7297262db611a6b
     changeNotes: Updated callback & Added product option.
   - sha: 7d26566a6d5f22f28a99a43b1635e08c5833d739
