@@ -153,11 +153,15 @@ aeEvent.Conversion.payment = conversionPayment;
 aeEvent.Conversion.voucher = voucherCode;
 aeEvent.Conversion.product = productId;
 
-// Init Global AE var to window scope and override if any
-if (setInWindow('AE', [aeEvent], true)) {
-  data.gtmOnSuccess();
+// Send conversion or init Global AE var to window scope and override if any
+if (callInWindow('AeTracker.sendConversion', aeEvent)) {
+    data.gtmOnSuccess();
 } else {
-  data.gtmOnFailure();
+    if (setInWindow('AE', [aeEvent], true)) {
+        data.gtmOnSuccess();
+    } else {
+        data.gtmOnFailure();
+    }
 }
 
 
