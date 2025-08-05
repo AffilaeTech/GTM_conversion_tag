@@ -130,6 +130,7 @@ ___SANDBOXED_JS_FOR_WEB_TEMPLATE___
 
 // Access to necessary APIs
 const setInWindow = require('setInWindow');
+const callInWindow = require('callInWindow');
 
 // Access data submitted in template fields
 const aeKey = data.aeKey;
